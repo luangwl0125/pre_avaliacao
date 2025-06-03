@@ -75,7 +75,7 @@ if consentimento:
         cog_palavras = st.radio("Apresenta troca ou inversão de palavras ao falar ou escrever?", ["Sim", "Não"])
         cog_anomia = st.radio("Apresenta dificuldade para encontrar palavras durante a fala - anomia?", ["Sim", "Não"])
 
-        st.header("4. Histórico Médico - Preencha conforme sua situação atual e passada:")
+        st.header("4. Histórico Médico: Situação atual e passada")
         # 1. Condições médicas
         st.subheader("1. Você possui ou já teve alguma das seguintes condições médicas?")
         condicoes_medicas = st.multiselect(
@@ -117,7 +117,9 @@ if consentimento:
         st.markdown("""
         **Como foi o desenvolvimento na infância? Indique se você teve alguma dificuldade em algum dos aspectos a seguir:**
         
-        - **Desenvolvimento motor grosso:** Sentar-se sem apoio, engatinhar, andar sozinha e realizar movimentos como correr, pular e subir escadas.  
+        - **Desenvolvimento motor grosso:** 
+        Sentar-se sem apoio, 
+        engatinhar, andar sozinha e realizar movimentos como correr, pular e subir escadas.  
         - **Desenvolvimento motor fino:** Habilidade de segurar objetos pequenos com precisão, utilizar talheres, lápis ou tesoura, bem como vestir-se e despir-se de forma autônoma.  
         - **Desenvolvimento da fala e linguagem:** Emissão de sons na idade esperada, formação de palavras e frases, compreensão de comandos e a clareza na articulação.  
         - **Desenvolvimento cognitivo:** Capacidade de resolver problemas simples, reconhecimento de formas, cores e números, funcionamento da memória e do raciocínio.  

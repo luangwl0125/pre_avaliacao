@@ -117,9 +117,7 @@ if consentimento:
         st.markdown("""
         **Como foi o desenvolvimento na infância? Indique se você teve alguma dificuldade em algum dos aspectos a seguir:**
         
-        - **Desenvolvimento motor grosso:** 
-        Sentar-se sem apoio, 
-        engatinhar, andar sozinha e realizar movimentos como correr, pular e subir escadas.  
+        - **Desenvolvimento motor grosso:** Sentar-se sem apoio, engatinhar, andar sozinha e realizar movimentos como correr, pular e subir escadas.  
         - **Desenvolvimento motor fino:** Habilidade de segurar objetos pequenos com precisão, utilizar talheres, lápis ou tesoura, bem como vestir-se e despir-se de forma autônoma.  
         - **Desenvolvimento da fala e linguagem:** Emissão de sons na idade esperada, formação de palavras e frases, compreensão de comandos e a clareza na articulação.  
         - **Desenvolvimento cognitivo:** Capacidade de resolver problemas simples, reconhecimento de formas, cores e números, funcionamento da memória e do raciocínio.  

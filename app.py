@@ -39,7 +39,9 @@ if consentimento:
         )
         data_nasc = st.date_input(
             "Data de Nascimento",
-            format="DD/MM/YYYY"
+            format="DD/MM/YYYY",
+            min_value=datetime(1900, 1, 1),
+            max_value=datetime.today()
         )
         idade = st.number_input("Idade", min_value=0, max_value=120, step=1)
         sexo = st.selectbox("Sexo", ["Masculino", "Feminino", "Outro"])

@@ -114,7 +114,20 @@ if consentimento:
         desenvolvimento = st.text_area("Nome do(s) medicamento(s) – Dosagem – Motivo – Por quem foi prescrito:")
 
         st.header("4. Aspectos do Desenvolvimento Infantil")
-        desenvolvimento = st.text_area("Como foi o desenvolvimento na infância? Indique se você teve alguma dificuldade em algum dos aspectos a seguir: -Desenvolvimento motor grosso: Sentar-se sem apoio, engatinhar, andar sozinha e realizar movimentos como correr, pular e subir escadas. -Desenvolvimento motor fino: Habilidade de segurar objetos pequenos com precisão, utilizar talheres, lápis ou tesoura, bem como vestir-se e despir-se de forma autônoma. -Desenvolvimento da fala e linguagem: Emissão de sons na idade esperada, formação de palavras e frases, compreensão de comandos e a clareza na articulação. -Desenvolvimento cognitivo: Capacidade de resolver problemas simples, reconhecimento de formas, cores e números, funcionamento da memória e do raciocínio. -Desenvolvimento emocional: Expressão adequada de sentimentos como alegria, frustração e medo, controle emocional diante de situações desafiadoras, estabelecimento de vínculos afetivos com os cuidadores. -Desenvolvimento social: Interação com adultos e outras crianças, partilha de brinquedos, participação em atividades coletivas, capacidade de seguir regras simples. -Autonomia: Práticas como a higiene pessoal (lavar as mãos, escovar os dentes), controle de esfíncteres e alimentação de forma independente. -Aquisição de hábitos e rotinas: Manutenção de um sono regular, alimentação equilibrada, adaptação ao ambiente escolar.")
+
+        desenvolvimento = st.text_area(
+            "Como foi o desenvolvimento na infância? Indique se você teve alguma dificuldade em algum dos aspectos a seguir:",
+            """
+        - Desenvolvimento motor grosso: Sentar-se sem apoio, engatinhar, andar sozinha e realizar movimentos como correr, pular e subir escadas.
+        - Desenvolvimento motor fino: Habilidade de segurar objetos pequenos com precisão, utilizar talheres, lápis ou tesoura, bem como vestir-se e despir-se de forma autônoma.
+        - Desenvolvimento da fala e linguagem: Emissão de sons na idade esperada, formação de palavras e frases, compreensão de comandos e a clareza na articulação.
+        - Desenvolvimento cognitivo: Capacidade de resolver problemas simples, reconhecimento de formas, cores e números, funcionamento da memória e do raciocínio.
+        - Desenvolvimento emocional: Expressão adequada de sentimentos como alegria, frustração e medo, controle emocional diante de situações desafiadoras, estabelecimento de vínculos afetivos com os cuidadores.
+        - Desenvolvimento social: Interação com adultos e outras crianças, partilha de brinquedos, participação em atividades coletivas, capacidade de seguir regras simples.
+        - Autonomia: Práticas como a higiene pessoal (lavar as mãos, escovar os dentes), controle de esfíncteres e alimentação de forma independente.
+        - Aquisição de hábitos e rotinas: Manutenção de um sono regular, alimentação equilibrada, adaptação ao ambiente escolar.
+            """
+        )
 
         st.header("5. Aspectos do Desenvolvimento Escolar")
         escolarizacao = st.text_area("Descreva como foi a escolarização (repetições, dificuldades, apoio pedagógico)")

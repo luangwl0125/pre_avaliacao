@@ -56,76 +56,76 @@ if consentimento:
         queixas = st.text_area("Descreva brevemente o motivo para a avaliação")
 
         st.header("3. Sintomas Cognitivos")  
-        cog_memoria = st.radio("Apresenta dificuldade de concentração?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta esquecimento frequente de compromissos ou informações recentes?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta lentidão no raciocínio?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta confusão mental?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta dificuldade para tomar decisões?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta desatenção a detalhes?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta dificuldade em planejar ou organizar tarefas?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta sensação de "mente vazia" ou "travada"?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta problemas para compreender instruções?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta perda de objetos com frequência?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta repetição de perguntas ou frases?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta dificuldade em manter o foco durante conversas?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta sensação de desorientação - tempo, espaço, pessoas?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta dificuldade para resolver problemas cotidianos?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta necessidade constante de listas ou lembretes?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta sensação de cansaço mental excessivo após esforço intelectual?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta troca ou inversão de palavras ao falar ou escrever?", ["Sim", "Não"])
-        cog_memoria = st.radio("Apresenta dificuldade para encontrar palavras durante a fala - anomia?", ["Sim", "Não"])
+        cog_concentracao = st.radio("Apresenta dificuldade de concentração?", ["Sim", "Não"])
+        cog_esquecimento = st.radio("Apresenta esquecimento frequente de compromissos ou informações recentes?", ["Sim", "Não"])
+        cog_raciocinio = st.radio("Apresenta lentidão no raciocínio?", ["Sim", "Não"])
+        cog_confusao = st.radio("Apresenta confusão mental?", ["Sim", "Não"])
+        cog_decisoes = st.radio("Apresenta dificuldade para tomar decisões?", ["Sim", "Não"])
+        cog_desatencao = st.radio("Apresenta desatenção a detalhes?", ["Sim", "Não"])
+        cog_planejamento = st.radio("Apresenta dificuldade em planejar ou organizar tarefas?", ["Sim", "Não"])
+        cog_mente_vazia = st.radio('Apresenta sensação de "mente vazia" ou "travada"?', ["Sim", "Não"])
+        cog_instrucoes = st.radio("Apresenta problemas para compreender instruções?", ["Sim", "Não"])
+        cog_perda_objetos = st.radio("Apresenta perda de objetos com frequência?", ["Sim", "Não"])
+        cog_repeticao = st.radio("Apresenta repetição de perguntas ou frases?", ["Sim", "Não"])
+        cog_foco = st.radio("Apresenta dificuldade em manter o foco durante conversas?", ["Sim", "Não"])
+        cog_desorientacao = st.radio("Apresenta sensação de desorientação - tempo, espaço, pessoas?", ["Sim", "Não"])
+        cog_problemas = st.radio("Apresenta dificuldade para resolver problemas cotidianos?", ["Sim", "Não"])
+        cog_lembretes = st.radio("Apresenta necessidade constante de listas ou lembretes?", ["Sim", "Não"])
+        cog_cansaco = st.radio("Apresenta sensação de cansaço mental excessivo após esforço intelectual?", ["Sim", "Não"])
+        cog_palavras = st.radio("Apresenta troca ou inversão de palavras ao falar ou escrever?", ["Sim", "Não"])
+        cog_anomia = st.radio("Apresenta dificuldade para encontrar palavras durante a fala - anomia?", ["Sim", "Não"])
 
-st.header("4. Histórico Médico - Preencha conforme sua situação atual e passada:")
-# 1. Condições médicas
-st.subheader("1. Você possui ou já teve alguma das seguintes condições médicas?")
-condicoes_medicas = st.multiselect(
-    "Marque as que se aplicam:",
-    [
-        "Hipertensão arterial",
-        "Diabetes",
-        "Problemas cardíacos",
-        "Doenças respiratórias crônicas (ex: asma, DPOC)",
-        "Doenças neurológicas (ex: epilepsia, AVC, Parkinson)",
-        "Doenças autoimunes (ex: lúpus, artrite reumatoide)",
-        "Câncer",
-        "Doenças psiquiátricas",
-        "Outra(s) condição(ões) relevante(s)"
-    ]
-)
+        st.header("4. Histórico Médico - Preencha conforme sua situação atual e passada:")
+        # 1. Condições médicas
+        st.subheader("1. Você possui ou já teve alguma das seguintes condições médicas?")
+        condicoes_medicas = st.multiselect(
+            "Marque as que se aplicam:",
+            [
+                "Hipertensão arterial",
+                "Diabetes",
+                "Problemas cardíacos",
+                "Doenças respiratórias crônicas (ex: asma, DPOC)",
+                "Doenças neurológicas (ex: epilepsia, AVC, Parkinson)",
+                "Doenças autoimunes (ex: lúpus, artrite reumatoide)",
+                "Câncer",
+                "Doenças psiquiátricas",
+                "Outra(s) condição(ões) relevante(s)"
+            ]
+        )
 
-if "Câncer" in condicoes_medicas:
-    cancer_info = st.text_input("Especifique o tipo de câncer e a data do diagnóstico:")
+        if "Câncer" in condicoes_medicas:
+            cancer_info = st.text_input("Especifique o tipo de câncer e a data do diagnóstico:")
 
-if "Doenças psiquiátricas" in condicoes_medicas:
-    psiquiatria_info = st.text_input("Especifique o diagnóstico psiquiátrico:")
+        if "Doenças psiquiátricas" in condicoes_medicas:
+            psiquiatria_info = st.text_input("Especifique o diagnóstico psiquiátrico:")
 
-if "Outra(s) condição(ões) relevante(s)" in condicoes_medicas:
-    outras_condicoes = st.text_input("Descreva outras condições médicas relevantes:")
+        if "Outra(s) condição(ões) relevante(s)" in condicoes_medicas:
+            outras_condicoes = st.text_input("Descreva outras condições médicas relevantes:")
 
-# 2. Internações
-st.subheader("2. Já foi internado(a)?")
-internado = st.radio("Selecione uma opção:", ["Não", "Sim"])
-if internado == "Sim":
-    detalhes_internacao = st.text_area("Descreva motivo(s), local(is) e data(s) das internações:")
+        # 2. Internações
+        st.subheader("2. Já foi internado(a)?")
+        internado = st.radio("Selecione uma opção:", ["Não", "Sim"])
+        if internado == "Sim":
+            detalhes_internacao = st.text_area("Descreva motivo(s), local(is) e data(s) das internações:")
 
-# 3. Medicações
-st.subheader("3. Faz uso contínuo ou recente de medicações?")
-usa_medicacao = st.radio("Selecione uma opção:", ["Não", "Sim"])
-medicacoes = []
-if usa_medicacao == "Sim":
-    num_meds = st.number_input("Quantos medicamentos deseja informar?", min_value=1, max_value=10, step=1)
-    for i in range(int(num_meds)):
-        st.markdown(f"**Medicação {i+1}**")
-        nome = st.text_input(f"Nome do medicamento:", key=f"nome_{i}")
-        dose = st.text_input("Dose diária:", key=f"dose_{i}")
-        motivo = st.text_input("Motivo do uso:", key=f"motivo_{i}")
-        prescrito_por = st.text_input("Prescrito por (profissional):", key=f"prof_{i}")
-        medicacoes.append({
-            "Nome": nome,
-            "Dose": dose,
-            "Motivo": motivo,
-            "Prescrito por": prescrito_por
-        })
+        # 3. Medicações
+        st.subheader("3. Faz uso contínuo ou recente de medicações?")
+        usa_medicacao = st.radio("Selecione uma opção:", ["Não", "Sim"], key="usa_medicacao")
+        medicacoes = []
+        if usa_medicacao == "Sim":
+            num_meds = st.number_input("Quantos medicamentos deseja informar?", min_value=1, max_value=10, step=1)
+            for i in range(int(num_meds)):
+                st.markdown(f"**Medicação {i+1}**")
+                nome = st.text_input(f"Nome do medicamento:", key=f"nome_{i}")
+                dose = st.text_input("Dose diária:", key=f"dose_{i}")
+                motivo = st.text_input("Motivo do uso:", key=f"motivo_{i}")
+                prescrito_por = st.text_input("Prescrito por (profissional):", key=f"prof_{i}")
+                medicacoes.append({
+                    "Nome": nome,
+                    "Dose": dose,
+                    "Motivo": motivo,
+                    "Prescrito por": prescrito_por
+                })
 
         st.header("5. Desenvolvimento e Escolarização")
         desenvolvimento = st.text_area("Relate como foi o desenvolvimento na infância (fala, andar, etc.)")

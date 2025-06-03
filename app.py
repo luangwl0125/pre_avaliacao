@@ -102,14 +102,8 @@ if consentimento:
         if "Outra(s) condição(ões) relevante(s)" in condicoes_medicas:
             outras_condicoes = st.text_input("Descreva outras condições médicas relevantes:")
 
-        # 2. Internações
-        st.subheader("2. Já foi internado(a)?")
-        internado = st.radio("Selecione uma opção:", ["Não", "Sim"])
-        if internado == "Sim":
-            detalhes_internacao = st.text_area("Descreva motivo(s), local(is) e data(s) das internações:")
-
-        # 3. Medicações
-        st.header("3. Faz uso contínuo ou recente de medicações?")
+        # 2. Medicações
+        st.subheader("2. Faz uso contínuo ou recente de medicações?")
         usa_medicacao = st.radio("Selecione uma opção:", ["Não", "Sim"], key="usa_medicacao")
         desenvolvimento = st.text_area("Nome do(s) medicamento(s) – Dosagem – Motivo – Por quem foi prescrito:")
 

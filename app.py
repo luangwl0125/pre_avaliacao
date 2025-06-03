@@ -32,9 +32,15 @@ if consentimento:
         nome = st.text_input("Nome completo", max_chars=100)
         email = st.text_input("E-mail para contato")
         telefone = st.text_input("Telefone")
-        data_avaliacao = st.date_input("Data da avaliação", datetime.today())
-        st.write("Data escolhida:", data_avaliacao.strftime("%d/%m/%Y"))
-        data_nasc = st.date_input("Data de Nascimento")
+        data_avaliacao = st.date_input(
+            "Data da avaliação",
+            datetime.today(),
+            format="DD/MM/YYYY"
+        )
+        data_nasc = st.date_input(
+            "Data de Nascimento",
+            format="DD/MM/YYYY"
+        )
         idade = st.number_input("Idade", min_value=0, max_value=120, step=1)
         sexo = st.selectbox("Sexo", ["Masculino", "Feminino", "Outro"])
         cidade_nasc = st.text_input("Cidade de nascimento")

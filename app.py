@@ -26,7 +26,74 @@ def carregar_configuracoes():
         "EMAIL_PORT": int(os.getenv("EMAIL_PORT", 587))
     }
 
-# Função para gerar documento Word (mantida como está)
+# Função para gerar documento Word
+def gerar_documento(nome, data_avaliacao, email, telefone, data_nasc, idade, sexo, cidade_nasc, estado_nasc,
+                     endereco, mao_escrita, idiomas, encaminhamento, queixas, sintomas, condicoes_medicas,
+                     cancer_info, psiquiatria_info, outras_condicoes, usa_medicacao, medicacoes,
+                     historico_medico, historico_familiar, desenvolvimento_infantil, historico_escolar,
+                     emocional_sono, emocional_apetite, emocional_humor, emocional_estresse,
+                     uso_neuro, observacoes):
+    nome_sanitizado = nome.strip().replace(" ", "_")
+    filename = f"avaliacao_{nome_sanitizado}.docx"
+    doc = Document()
+
+    doc.add_heading(f"Pré-Avaliação Neuropsicológica: {nome}", level=1)
+    doc.add_paragraph(f"Data da Avaliação: {data_avaliacao.strftime('%d/%m/%Y')}")
+    doc.add_paragraph(f"E-mail: {email if email else 'Não informado'}")
+    doc.add_paragraph(f"Telefone: {telefone if telefone else 'Não informado'}")
+    doc.add_paragraph(f"Nascimento: {data_nasc.strftime('%d/%m/%Y')}  (Idade: {idade})")
+    doc.add_paragraph(f"Sexo: {sexo}")
+    doc.add_paragraph(f"Cidade/Estado de nascimento: {cidade_nasc}/{estado_nasc}")
+    doc.add_paragraph(f"Endereço: {endereco if endereco else 'Não informado'}")
+    doc.add_paragraph(f"Mão dominante: {mao_escrita}")
+    idi_list = [i for i in idiomas if i != "Não"]
+    doc.add_paragraph(f"Idiomas: {', '.join(idi_list) if idi_list else 'Nenhum'}")
+    doc.add_paragraph(f"Encaminhado por: {encaminhamento if encaminhamento else 'Nenhum'}")
+
+    doc.add_page_break()
+    doc.add_heading("2. Queixas Principais", level=2)
+    doc.add_paragraph(queixas if queixas else "Nenhuma")
+
+    doc.add_page_break()
+    doc.add_heading("3. Sintomas Cognitivos", level=2)
+    for pergunta, resposta in sintomas.items():
+        doc.add_paragraph(f"{pergunta}: {resposta}")
+
+    doc.add_page_break()
+    doc.add_heading("4. Histórico Médico", level=2)
+    doc.add_paragraph(f"Condições Médicas: {', '.join(condicoes_medicas) if condicoes_medicas else 'Nenhuma'}")
+    if cancer_info: doc.add_paragraph(f"Tipo de câncer: {cancer_info}")
+    if psiquiatria_info: doc.add_paragraph(f"Diagnóstico psiquiátrico: {psiquiatria_info}")
+    if outras_condicoes: doc.add_paragraph(f"Outras condições: {outras_condicoes}")
+    doc.add_paragraph(f"Uso de Medicações: {usa_medicacao} - {medicacoes if medicacoes else 'Nenhum'}")
+    doc.add_paragraph(f"Histórico Médico Pessoal: {historico_medico}")
+    doc.add_paragraph(f"Histórico Médico Familiar: {historico_familiar}")
+
+    doc.add_page_break()
+    doc.add_heading("5. Desenvolvimento Infantil", level=2)
+    doc.add_paragraph(desenvolvimento_infantil)
+
+    doc.add_page_break()
+    doc.add_heading("6. Desenvolvimento Escolar", level=2)
+    doc.add_paragraph(historico_escolar)
+
+    doc.add_page_break()
+    doc.add_heading("7. Aspectos Emocionais", level=2)
+    doc.add_paragraph(f"Sono: {emocional_sono}")
+    doc.add_paragraph(f"Apetite: {emocional_apetite}")
+    doc.add_paragraph(f"Humor: {emocional_humor}")
+    doc.add_paragraph(f"Estresse: {emocional_estresse}")
+
+    doc.add_page_break()
+    doc.add_heading("8. Uso de Neurotecnologias", level=2)
+    doc.add_paragraph(uso_neuro)
+
+    doc.add_page_break()
+    doc.add_heading("9. Observações Finais", level=2)
+    doc.add_paragraph(observacoes)
+
+    doc.save(filename)
+    return filename
 # Função para envio de e-mail (mantida como está)
 
 # UI Streamlit

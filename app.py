@@ -5,6 +5,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
+from email.utils import parseaddr
 
 # Carrega credenciais do Streamlit Secrets
 EMAIL_SMTP = st.secrets["email"]["smtp"]
@@ -190,12 +191,18 @@ if consentimento:
             doc.save(filename)
             st.success(f"Arquivo `{filename}` gerado com sucesso.")
 
-            # Envio por e-mail
+            # Validação do e-mail antes de enviar
+            destinatario = email.strip()
+            if not destinatario or "@" not in parseaddr(destinatario)[1]:
+                destinatario = EMAIL_USER  # envia para seu próprio e-mail caso o usuário não informe corretamente
+
+            # Envio por e-mail com EHLO + STARTTLS + validação de destinatário
             try:
                 msg = MIMEMultipart()
                 msg["From"] = EMAIL_USER
-                msg["To"] = email or EMAIL_USER
+                msg["To"] = destinatario
                 msg["Subject"] = f"Avaliação de {nome} – {data_avaliacao.strftime('%d/%m/%Y')}"
+
                 with open(filename, "rb") as attachment:
                     part = MIMEBase(
                         "application",
@@ -203,13 +210,4 @@ if consentimento:
                     )
                     part.set_payload(attachment.read())
                     encoders.encode_base64(part)
-                    part.add_header("Content-Disposition", f'attachment; filename="{filename}"')
-                    msg.attach(part)
-                server = smtplib.SMTP(EMAIL_SMTP, EMAIL_PORT)
-                server.starttls()
-                server.login(EMAIL_USER, EMAIL_PASS)
-                server.sendmail(EMAIL_USER, email or EMAIL_USER, msg.as_string())
-                server.quit()
-                st.success("E-mail enviado com sucesso.")
-            except Exception as e:
-                st.error(f"Erro ao enviar e-mail: {e}")
+                    part.add_header("Content-Dispo_

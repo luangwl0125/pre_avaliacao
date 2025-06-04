@@ -1,24 +1,8 @@
+# Versão corrigida do Formulário de Pré-Avaliação Neuropsicológica
 import os
 import streamlit as st
-from datetime import datetime
 from docx import Document
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
-from dotenv import load_dotenv
-
-# Carrega variáveis de ambiente
-load_dotenv()
-EMAIL_USER = os.getenv("EMAIL_USER")
-EMAIL_PASS = os.getenv("EMAIL_PASS")
-EMAIL_SMTP = os.getenv("EMAIL_SMTP")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
-
-# Configuração da página
-st.set_page_config(page_title="Formulário de Pré-Avaliação Neuropsicológica", layout="wide")
-
-# Título e instruções iniciais
+@@ -20,14 +20,16 @@
 st.title("Formulário de Pré-Avaliação Neuropsicológica")
 
 st.markdown("""
@@ -26,134 +10,167 @@ Este formulário tem como objetivo coletar informações iniciais para sua avali
 Os dados serão mantidos sob sigilo e utilizados apenas para fins clínicos, conforme o Código de Ética Profissional do Psicólogo (CFP).
 """)
 
-# Checkbox de consentimento
+# Consentimento
 consentimento = st.checkbox("Declaro que li e concordo com o uso das informações acima para fins de avaliação psicológica.")
 
-# Exibe formulário somente se o consentimento for marcado
 if consentimento:
     with st.form(key="form_anamnese"):
-        # === DADOS PESSOAIS ===
-        st.header("Dados Pessoais")
-        nome = st.text_input("Nome completo", max_chars=100)
-        email = st.text_input("E-mail")
-        telefone = st.text_input("Telefone")
-        data_nasc = st.date_input("Data de Nascimento")
-        idade = st.number_input("Idade", min_value=0, max_value=120, step=1)
-        sexo = st.selectbox("Sexo", ["Masculino", "Feminino", "Outro"])
-        cidade_estado = st.text_input("Cidade/Estado de nascimento")
-        endereco = st.text_input("Endereço completo")
-        mao_escrita = st.selectbox("Mão dominante", ["Direita", "Esquerda", "Ambidestro"])
-        idiomas = st.multiselect("Idiomas falados", ["Inglês", "Espanhol", "Francês", "Outro"])
-        encaminhamento = st.text_input("Encaminhado por")
-
-        st.markdown("---")
-        # === QUEIXAS PRINCIPAIS ===
-        st.header("Queixas Principais")
-        queixas = st.text_area("Descreva as queixas principais", height=80)
-
-        st.markdown("---")
-        # === HISTÓRICO MÉDICO E FAMILIAR ===
-        st.header("Histórico Médico e Familiar")
-        hx_medico = st.text_area("Histórico médico (diagnósticos, datas, intervenções)", height=80)
-        hx_familiar = st.text_area("Histórico familiar (neurológico/psiquiátrico)", height=80)
-        medicacoes = st.text_area("Medicações em uso atualmente", height=60)
-
-        st.markdown("---")
-        # === DESENVOLVIMENTO E ESCOLARIZAÇÃO ===
-        st.header("Desenvolvimento e Escolarização")
-        desenvolvimento_infantil = st.text_area(
-            "Relato do desenvolvimento infantil (marcos motores, fala, etc.)", height=100
+        # == 1. Dados Pessoais ==
+        st.header("1. Dados Pessoais")
+        nome = st.text_input("Nome completo:", max_chars=100)
+        email = st.text_input("E-mail para contato:")
+@@ -38,7 +40,7 @@
+            format="DD/MM/YYYY"
         )
-        hx_escolar = st.text_area("Histórico escolar (escolas, repetências, desempenho)", height=80)
+        data_nasc = st.date_input(
+            "Data de Nascimento:",
+            format="DD/MM/YYYY",
+            min_value=datetime(1900, 1, 1),
+            max_value=datetime.today()
+@@ -49,13 +51,18 @@
+        estado_nasc = st.text_input("Estado de nascimento:")
+        endereco = st.text_input("Endereço completo:")
+        mao_escrita = st.radio("Mão que usa para escrever:", ["Direita", "Esquerda", "Ambidestro"])
+        idiomas = st.multiselect(
+            "Fala outro(s) idioma(s)?",
+            ["Não", "Inglês", "Espanhol", "Francês", "Outro"]
+        )
+        encaminhamento = st.text_input("Se você foi encaminhado(a) por algum profissional de saúde, informe aqui:")
 
-        st.markdown("---")
-        # === ASPECTOS EMOCIONAIS E COMPORTAMENTAIS ===
-        st.header("Aspectos Emocionais e Comportamentais")
-        sono = st.selectbox("Qualidade do sono", ["Adequado", "Insônia", "Excesso de sono", "Outro"])
-        apetite = st.selectbox("Apetite", ["Adequado", "Aumentado", "Reduzido", "Outro"])
-        humor = st.selectbox("Humor geral", ["Estável", "Irritável", "Triste", "Ansioso", "Outro"])
-        estresse = st.selectbox("Nível de estresse", ["Baixo", "Moderado", "Alto", "Outro"])
+        # == 2. Queixas Principais ==
+        st.header("2. Queixas Principais")
+        queixas = st.text_area("Descreva brevemente o motivo para a avaliação:")
 
-        st.markdown("---")
-        # === USO DE NEUROTECNOLOGIAS (OPCIONAL) ===
-        st.header("Uso de Neurotecnologias")
-        uso_neuro = st.text_area(
-            "Informe se já utiliza Neurofeedback, tDCS, Hipnose, BrainTap, Muse ou outros", height=60
+        # == 3. Sintomas Cognitivos ==
+        st.header("3. Sintomas Cognitivos")
+        cog_concentracao = st.radio("Apresenta dificuldade de concentração?", ["Sim", "Não"])
+        cog_esquecimento = st.radio("Apresenta esquecimento frequente de compromissos ou informações recentes?", ["Sim", "Não"])
+        cog_raciocinio = st.radio("Apresenta lentidão no raciocínio?", ["Sim", "Não"])
+@@ -68,18 +75,17 @@
+        cog_perda_objetos = st.radio("Apresenta perda de objetos com frequência?", ["Sim", "Não"])
+        cog_repeticao = st.radio("Apresenta repetição de perguntas ou frases?", ["Sim", "Não"])
+        cog_foco = st.radio("Apresenta dificuldade em manter o foco durante conversas?", ["Sim", "Não"])
+        cog_desorientacao = st.radio("Apresenta sensação de desorientação (tempo, espaço, pessoas)?", ["Sim", "Não"])
+        cog_problemas = st.radio("Apresenta dificuldade para resolver problemas cotidianos?", ["Sim", "Não"])
+        cog_lembretes = st.radio("Apresenta necessidade constante de listas ou lembretes?", ["Sim", "Não"])
+        cog_cansaco = st.radio("Apresenta sensação de cansaço mental excessivo após esforço intelectual?", ["Sim", "Não"])
+        cog_palavras = st.radio("Apresenta troca ou inversão de palavras ao falar ou escrever?", ["Sim", "Não"])
+        cog_anomia = st.radio("Apresenta dificuldade para encontrar palavras durante a fala (anomia)?", ["Sim", "Não"])
+
+        # == 4. Histórico Médico: Situação atual e passada ==
+        st.header("4. Histórico Médico: Situação atual e passada")
+
+
+        condicoes_medicas = st.multiselect(
+            "Marque as condições médicas que se aplicam:",
+            [
+                "Hipertensão arterial",
+                "Diabetes",
+@@ -92,51 +98,61 @@
+                "Outra(s) condição(ões) relevante(s)"
+            ]
         )
 
-        st.markdown("---")
-        # === OBSERVAÇÕES FINAIS ===
-        st.header("Observações Finais")
-        observacoes = st.text_area("Informações adicionais", height=80)
+        if "Câncer" in condicoes_medicas:
+            cancer_info = st.text_input("Especifique o tipo de câncer e a data do diagnóstico:")
+
+        if "Doenças psiquiátricas" in condicoes_medicas:
+            psiquiatria_info = st.text_input("Especifique o diagnóstico psiquiátrico:")
+
+        if "Outra(s) condição(ões) relevante(s)" in condicoes_medicas:
+            outras_condicoes = st.text_input("Descreva outras condições médicas relevantes:")
+
+        st.subheader("Uso de Medicações")
+        usa_medicacao = st.radio("Faz uso contínuo ou recente de medicações?", ["Não", "Sim"], key="usa_medicacao")
+        medicacoes = st.text_area(
+            "Nome do(s) medicamento(s) – Dosagem – Motivo – Por quem foi prescrito:"
+        )
+
+        historico_medico = st.text_area("Descreva seu histórico médico atual e passado:")
+        historico_familiar = st.text_area("Descreva histórico médico familiar:")
+
+        # == 5. Aspectos do Desenvolvimento Infantil ==
+        st.header("5. Aspectos do Desenvolvimento Infantil")
+        st.markdown("""
+        **Como foi o desenvolvimento na infância? Indique se você teve alguma dificuldade em algum dos aspectos a seguir:**
+        
+        - **Desenvolvimento motor grosso:** Sentar-se sem apoio, engatinhar, andar sozinho, correr, pular e subir escadas.  
+        - **Desenvolvimento motor fino:** Agilidade para segurar objetos pequenos com precisão, usar talheres, lápis ou tesoura, vestir-se e despir-se de forma autônoma.  
+        - **Desenvolvimento da fala e linguagem:** Emissão de sons na idade esperada, formação de palavras e frases, compreensão de comandos e clareza na articulação.  
+        - **Desenvolvimento cognitivo:** Resolver problemas simples, reconhecimento de formas, cores e números, memória e raciocínio.  
+        - **Desenvolvimento emocional:** Expressão adequada de sentimentos (alegria, frustração, medo), controle emocional em situações desafiadoras, vinculação afetiva com cuidadores.  
+        - **Desenvolvimento social:** Interação com adultos e outras crianças, partilha de brinquedos, participação em atividades em grupo, seguir regras simples.  
+        - **Autonomia:** Higiene pessoal (lavar as mãos, escovar os dentes), controle de esfíncteres, alimentação independente.  
+        - **Aquisição de hábitos e rotinas:** Sono regular, alimentação equilibrada, adaptação ao ambiente escolar.
+        """)
+
+        # == 6. Aspectos do Desenvolvimento Escolar ==
+        st.header("6. Aspectos do Desenvolvimento Escolar")
+        historico_escolar = st.text_area(
+            "Descreva como foi a escolarização (repetições, dificuldades, apoio pedagógico):"
+        )
+
+        # == 7. Aspectos Emocionais ==
+        st.header("7. Aspectos Emocionais")
+        emocional_sono = st.radio("Alterações de sono?", ["Sim", "Não"])
+        emocional_apetite = st.radio("Alterações de apetite?", ["Sim", "Não"])
+        emocional_humor = st.radio("Oscilações de humor ou tristeza frequente?", ["Sim", "Não"])
+
+        # == 8. Observações Finais ==
+        st.header("8. Observações Finais")
+        observacoes = st.text_area("Informações adicionais relevantes:")
 
         submit_button = st.form_submit_button(label="Enviar Avaliação")
 
         if submit_button:
-            # 1. Geração do arquivo Word
-            nome_sanitizado = nome.strip().replace(" ", "_")
-            filename = f"avaliacao_{nome_sanitizado}.docx"
+            # Define nome do arquivo Word
+            filename = f"avaliacao_{nome.strip().replace(' ', '_')}.docx"
             doc = Document()
 
             # Cabeçalho
             doc.add_heading(f"Pré-Avaliação Neuropsicológica: {nome}", level=1)
+            doc.add_paragraph(f"Data da Avaliação: {data_avaliacao.strftime('%d/%m/%Y')}")
             doc.add_paragraph(f"E-mail: {email}")
-            doc.add_paragraph(f"Telefone: {telefone}")
-            doc.add_paragraph(f"Nascimento: {data_nasc.strftime('%d/%m/%Y')}  (Idade: {idade})")
-            doc.add_paragraph(f"Sexo: {sexo}")
-            doc.add_paragraph(f"Cidade/Estado de nascimento: {cidade_estado}")
-            doc.add_paragraph(f"Endereço: {endereco}")
+@@ -148,28 +164,47 @@
             doc.add_paragraph(f"Mão dominante: {mao_escrita}")
             doc.add_paragraph(f"Idiomas: {', '.join(idiomas) if idiomas else 'Nenhum'}")
             doc.add_paragraph(f"Encaminhado por: {encaminhamento}")
 
-            # Queixas Principais
-            doc.add_page_break()
+            # Queixas
             doc.add_heading("Queixas Principais", level=2)
-            doc.add_paragraph(queixas if queixas else "Nenhuma")
+            doc.add_paragraph(queixas)
 
             # Histórico Médico e Familiar
-            doc.add_page_break()
             doc.add_heading("Histórico Médico e Familiar", level=2)
-            doc.add_paragraph(f"Histórico Médico: {hx_medico if hx_medico else 'Nenhum registrado'}")
-            doc.add_paragraph(f"Histórico Familiar: {hx_familiar if hx_familiar else 'Nenhum registrado'}")
-            doc.add_paragraph(f"Medicações: {medicacoes if medicacoes else 'Nenhuma'}")
+            doc.add_paragraph(f"Médico: {historico_medico}")
+            doc.add_paragraph(f"Familiar: {historico_familiar}")
+            doc.add_paragraph(f"Medicações: {medicacoes}")
 
             # Desenvolvimento e Escolarização
-            doc.add_page_break()
             doc.add_heading("Desenvolvimento e Escolarização", level=2)
+            doc.add_paragraph("Relato do desenvolvimento infantil conforme informações acima.")
+            doc.add_paragraph(f"Histórico Escolar: {historico_escolar}")
+
+            # Aspectos Emocionais
+            doc.add_heading("Aspectos Emocionais", level=2)
             doc.add_paragraph(
-                f"Desenvolvimento Infantil: {desenvolvimento_infantil if desenvolvimento_infantil else 'Não descrito'}"
+                f"Sono: {emocional_sono}, Apetite: {emocional_apetite}, Humor: {emocional_humor}"
             )
-            doc.add_paragraph(f"Histórico Escolar: {hx_escolar if hx_escolar else 'Não descrito'}")
-
-            # Aspectos Emocionais e Comportamentais
-            doc.add_page_break()
-            doc.add_heading("Aspectos Emocionais e Comportamentais", level=2)
-            doc.add_paragraph(f"Sono: {sono}")
-            doc.add_paragraph(f"Apetite: {apetite}")
-            doc.add_paragraph(f"Humor: {humor}")
-            doc.add_paragraph(f"Nível de estresse: {estresse}")
-
-            # Uso de Neurotecnologias
-            doc.add_page_break()
-            doc.add_heading("Uso de Neurotecnologias", level=2)
-            doc.add_paragraph(uso_neuro if uso_neuro else "Nenhum uso informado")
 
             # Observações Finais
-            doc.add_page_break()
             doc.add_heading("Observações Finais", level=2)
-            doc.add_paragraph(observacoes if observacoes else "Nenhuma observação adicional")
+            doc.add_paragraph(observacoes if observacoes else "Nenhuma.")
 
+            # Salva o arquivo
             doc.save(filename)
             st.success(f"Arquivo `{filename}` gerado com sucesso.")
 
-            # 2. Enviar por e-mail
+            # Envio por e-mail
             try:
                 msg = MIMEMultipart()
                 msg["From"] = EMAIL_USER
-                msg["To"] = EMAIL_USER
-                msg["Subject"] = f"Avaliação de {nome} – {data_nasc.strftime('%d/%m/%Y')}"
-
+                msg["To"] = email or EMAIL_USER
+                msg["Subject"] = f"Avaliação de {nome} – {data_avaliacao.strftime('%d/%m/%Y')}"
                 with open(filename, "rb") as attachment:
                     part = MIMEBase(
                         "application",
@@ -161,20 +178,9 @@ if consentimento:
                     )
                     part.set_payload(attachment.read())
                     encoders.encode_base64(part)
-                    part.add_header(
-                        "Content-Disposition",
-                        f'attachment; filename="{filename}"',
-                    )
-                    msg.attach(part)
-
-                server = smtplib.SMTP(EMAIL_SMTP, EMAIL_PORT)
-                server.starttls()
-                server.login(EMAIL_USER, EMAIL_PASS)
-                server.sendmail(EMAIL_USER, EMAIL_USER, msg.as_string())
+                    part.add_header("Content-Disposition", f'attachment; filename="{filename}"')
+@@ -181,4 +216,4 @@
                 server.quit()
-
-                st.success("E-mail enviado com sucesso para o seu endereço.")
-                st.info(f"Verifique sua caixa de entrada: {EMAIL_USER}")
-
+                st.success("E-mail enviado com sucesso.")
             except Exception as e:
-                st.error(f"Falha ao enviar e-mail: {e}")
+                st.error(f"Erro ao enviar e-mail: {e}")Add comment

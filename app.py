@@ -210,4 +210,19 @@ if consentimento:
                     )
                     part.set_payload(attachment.read())
                     encoders.encode_base64(part)
-                    part.add_header("Content-Dispo_
+                    part.add_header(
+                        "Content-Disposition",
+                        f'attachment; filename="{filename}"'
+                    )
+                    msg.attach(part)
+
+                server = smtplib.SMTP(EMAIL_SMTP, EMAIL_PORT)
+                server.ehlo()                 # Identifica-se ao servidor
+                server.starttls()             # Inicia criptografia TLS
+                server.ehlo()                 # Reenvia identificação após TLS
+                server.login(EMAIL_USER, EMAIL_PASS)
+                server.sendmail(EMAIL_USER, destinatario, msg.as_string())
+                server.quit()
+                st.success("E-mail enviado com sucesso.")
+            except Exception as e:
+                st.error(f"Erro ao enviar e-mail: {e}")

@@ -110,7 +110,7 @@ if consentimento:
         usa_medicacao = st.radio("Faz uso contínuo ou recente de medicações?", ["Não", "Sim"])
         medicacoes = st.text_area(
             "Nome do(s) medicamento(s) – Dosagem – Motivo – Por quem foi prescrito:",
-            height=60
+            height=80  # Ajustado para 80px (mínimo 68px) :contentReference[oaicite:1]{index=1}
         )
 
         historico_medico = st.text_area("Descreva seu histórico médico atual e passado:", height=80)
@@ -261,4 +261,3 @@ if consentimento:
                 st.success("E-mail enviado com sucesso.")
             except Exception as e:
                 st.error(f"Erro ao enviar e-mail: {e}")
-

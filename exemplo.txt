@@ -1,0 +1,112 @@
+st.markdown("### 🎯 Atividade Prática")
+with st.container():
+    st.info("**Tarefa:** Criar a primeira versão do Prompt Mestre")
+
+st.markdown("### Building The Master Prompt")
+st.markdown("#### Preencha o formulário abaixo para criar seu Prompt Mestre personalizado")
+
+# Criar diretório para salvar os arquivos se não existir
+os.makedirs(DOCS_DIR, exist_ok=True)
+
+with st.form("form_prompt_mestre"):
+    objetivo = st.text_area("1. Objetivo do Prompt", height=80)
+    persona_selecionada = st.multiselect("2. Persona do Assistente", [
+        "Secretário(a) do psicólogo",
+        "Assistente do educador físico",
+        "Auxiliar jurídico do advogado",
+        "Coordenador de atendimento do empresário"
+    ])
+    persona_descricao = st.text_area("Descreva a persona", height=70)
+    estilo_texto = st.text_area("3. Estilo de Linguagem", height=70)
+    estilo_selecionado = st.multiselect("Escolha opções de estilo", [
+        "Formal e técnico", "Leve e motivacional", "Científico e objetivo", "Acolhedor e empático"
+    ])
+    publico_selecionado = st.multiselect("4. Público-Alvo", [
+        "Pacientes", "Clientes", "Equipes multiprofissionais", "Alunos"
+    ])
+    tipo_linguagem = st.selectbox("5. Tipo de Linguagem", [
+        "Simples e direta", "Detalhada e explicativa", "Técnica", "Criativa", "Lúdica"
+    ])
+    contexto = st.text_area("6. Contexto Profissional e de Vida", height=80)
+    faixa_etaria = st.selectbox("7. Faixa Etária do Público-Alvo", [
+        "Crianças (0-12)", "Adolescentes (13-17)", "Adultos (18-59)", "Idosos (60+)"
+    ])
+    formato_saida = st.selectbox("8. Formato de Saída Esperado", [
+        "Texto corrido", "Lista de etapas", "Roteiro", "Tabela", "JSON ou estrutura de dados"
+    ])
+    inspiracoes = st.text_area("9. Inspirações e Referências", height=70)
+    restricoes_selecionadas = st.multiselect("10. Restrições", [
+        "Evitar linguagem diagnóstica", "Respeitar anonimato",
+        "Não gerar interpretações jurídicas", "Priorizar inclusão e acessibilidade"
+    ])
+    restricao_adicional = st.text_area("Outras restrições", height=70)
+    sobre_voce = st.text_area("11. Sobre Você (inclua seu nome completo)", height=80, help="Seu nome será usado para identificar o arquivo")
+    biopsicossocial = st.text_area("12. Questão Biopsicossocial", height=70)
+    atividades = st.text_area("13. Três atividades a automatizar", height=70)
+
+    submitted = st.form_submit_button("📨 Finalizar e Gerar Documento")
+
+if submitted:
+    if not sobre_voce.strip():
+        st.error("Por favor, preencha seu nome no campo 'Sobre Você'")
+    else:
+        nome = sobre_voce.strip().split("\n")[0].split(" ")[0]
+        
+        # Criar o documento Word
+        doc = Document()
+        doc.add_heading(f"Prompt Mestre - {nome}", 0)
+        
+        # Adicionar conteúdo ao documento
+        campos = {
+            "Objetivo do Prompt": objetivo,
+            "Persona Selecionada": ", ".join(persona_selecionada),
+            "Descrição da Persona": persona_descricao,
+            "Estilo de Linguagem": estilo_texto,
+            "Estilo Selecionado": ", ".join(estilo_selecionado),
+            "Público-Alvo": ", ".join(publico_selecionado),
+            "Tipo de Linguagem": tipo_linguagem,
+            "Contexto Profissional e de Vida": contexto,
+            "Faixa Etária": faixa_etaria,
+            "Formato de Saída": formato_saida,
+            "Inspirações": inspiracoes,
+            "Restrições Selecionadas": ", ".join(restricoes_selecionadas),
+            "Outras Restrições": restricao_adicional,
+            "Sobre Você": sobre_voce,
+            "Questão Biopsicossocial": biopsicossocial,
+            "Atividades a Automatizar": atividades
+        }
+        
+        for titulo, conteudo in campos.items():
+            doc.add_heading(titulo, level=1)
+            doc.add_paragraph(conteudo if conteudo else "-")
+            doc.add_paragraph()  # Espaço entre seções
+
+        # Salvar o documento
+        nome_arquivo = DOCS_DIR / f"PromptMestre_{nome}.docx"
+        doc.save(str(nome_arquivo))
+        
+        # Mostrar mensagem de sucesso e botão de download
+        st.success(f"✅ Documento gerado com sucesso para {nome}!")
+        
+        with open(nome_arquivo, "rb") as file:
+            st.download_button(
+                label="📥 Baixar Prompt Mestre (DOCX)",
+                data=file,
+                file_name=f"PromptMestre_{nome}.docx",
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            )
+
+# Botões de navegação
+st.markdown("---")
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    if st.button("⬅️ Aula Anterior"):
+        st.switch_page("pages/03_fundamentos_prompt.py")    
+        
+with col3:
+    if st.button("Próxima Aula ➡️"):
+        st.switch_page("pages/05_personalizacao.py")
+
+# Progresso
+st.progress(4/12, text="Progresso: 33.33%") 

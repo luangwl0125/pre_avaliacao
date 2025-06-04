@@ -110,7 +110,7 @@ if consentimento:
         usa_medicacao = st.radio("Faz uso contínuo ou recente de medicações?", ["Não", "Sim"])
         medicacoes = st.text_area(
             "Nome do(s) medicamento(s) – Dosagem – Motivo – Por quem foi prescrito:",
-            height=80  # Ajustado para 80px (mínimo 68px) :contentReference[oaicite:1]{index=1}
+            height=80  # Ajustado para ≥ 68px 
         )
 
         historico_medico = st.text_area("Descreva seu histórico médico atual e passado:", height=80)
@@ -253,7 +253,9 @@ if consentimento:
                     msg.attach(part)
 
                 server = smtplib.SMTP(EMAIL_SMTP, EMAIL_PORT)
+                server.ehlo()                      # Garante handshake antes do starttls 
                 server.starttls()
+                server.ehlo()                      # Re-negocia após TLS
                 server.login(EMAIL_USER, EMAIL_PASS)
                 server.sendmail(EMAIL_USER, [email or EMAIL_USER], msg.as_string())
                 server.quit()

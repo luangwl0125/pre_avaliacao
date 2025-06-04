@@ -1,5 +1,3 @@
-# Versão corrigida do Formulário de Pré-Avaliação Neuropsicológica
-import os
 import streamlit as st
 from docx import Document
 from datetime import datetime
@@ -7,14 +5,12 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
-from dotenv import load_dotenv
 
-# Carrega variáveis de ambiente
-load_dotenv()
-EMAIL_USER = os.getenv("EMAIL_USER")
-EMAIL_PASS = os.getenv("EMAIL_PASS")
-EMAIL_SMTP = os.getenv("EMAIL_SMTP")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+# Carrega credenciais do Streamlit Secrets
+EMAIL_SMTP = st.secrets["email"]["smtp"]
+EMAIL_PORT = st.secrets["email"]["port"]
+EMAIL_USER = st.secrets["email"]["user"]
+EMAIL_PASS = st.secrets["email"]["pass"]
 
 st.set_page_config(page_title="Avaliação Neuropsicológica", layout="wide")
 st.title("Formulário de Pré-Avaliação Neuropsicológica")

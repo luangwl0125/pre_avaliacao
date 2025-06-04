@@ -110,7 +110,7 @@ if consentimento:
         usa_medicacao = st.radio("Faz uso contínuo ou recente de medicações?", ["Não", "Sim"])
         medicacoes = st.text_area(
             "Nome do(s) medicamento(s) – Dosagem – Motivo – Por quem foi prescrito:",
-            height=80  # Ajustado para ≥ 68px 
+            height=80  # mínimo 68px
         )
 
         historico_medico = st.text_area("Descreva seu histórico médico atual e passado:", height=80)
@@ -168,67 +168,89 @@ if consentimento:
         submit_button = st.form_submit_button(label="Enviar Avaliação")
 
         if submit_button:
-            # Define nome do arquivo Word
+            # Sanitize e define nome do arquivo Word
             nome_sanitizado = nome.strip().replace(" ", "_")
             filename = f"avaliacao_{nome_sanitizado}.docx"
             doc = Document()
 
-            # Cabeçalho
+            # == Cabeçalho com Dados Pessoais ==
             doc.add_heading(f"Pré-Avaliação Neuropsicológica: {nome}", level=1)
             doc.add_paragraph(f"Data da Avaliação: {data_avaliacao.strftime('%d/%m/%Y')}")
-            doc.add_paragraph(f"E-mail: {email}")
-            doc.add_paragraph(f"Telefone: {telefone}")
+            doc.add_paragraph(f"E-mail: {email if email else 'Não informado'}")
+            doc.add_paragraph(f"Telefone: {telefone if telefone else 'Não informado'}")
             doc.add_paragraph(f"Nascimento: {data_nasc.strftime('%d/%m/%Y')}  (Idade: {idade})")
             doc.add_paragraph(f"Sexo: {sexo}")
-            doc.add_paragraph(f"Estado de nascimento: {estado_nasc}")
-            doc.add_paragraph(f"Cidade de nascimento: {cidade_nasc}")
-            doc.add_paragraph(f"Endereço: {endereco}")
+            doc.add_paragraph(f"Cidade/Estado de nascimento: {cidade_nasc}/{estado_nasc}")
+            doc.add_paragraph(f"Endereço: {endereco if endereco else 'Não informado'}")
             doc.add_paragraph(f"Mão dominante: {mao_escrita}")
-            doc.add_paragraph(f"Idiomas: {', '.join(idiomas) if idiomas and idiomas[0] != 'Não' else 'Nenhum'}")
+            idi_list = [i for i in idiomas if i != "Não"]
+            doc.add_paragraph(f"Idiomas: {', '.join(idi_list) if idi_list else 'Nenhum'}")
             doc.add_paragraph(f"Encaminhado por: {encaminhamento if encaminhamento else 'Nenhum'}")
 
-            # Queixas Principais
+            # == Seção 2: Queixas Principais ==
             doc.add_page_break()
-            doc.add_heading("Queixas Principais", level=2)
+            doc.add_heading("2. Queixas Principais", level=2)
             doc.add_paragraph(queixas if queixas else "Nenhuma")
 
-            # Histórico Médico e Familiar
+            # == Seção 3: Sintomas Cognitivos ==
             doc.add_page_break()
-            doc.add_heading("Histórico Médico: Situação Atual e Passada", level=2)
-            doc.add_paragraph(f"Condições Médicas: {', '.join(condicoes_medicas) if condicoes_medicas else 'Nenhuma'}")
+            doc.add_heading("3. Sintomas Cognitivos", level=2)
+            doc.add_paragraph(f"Dificuldade de concentração: {cog_concentracao}")
+            doc.add_paragraph(f"Esquecimento frequente: {cog_esquecimento}")
+            doc.add_paragraph(f"Lentidão no raciocínio: {cog_raciocinio}")
+            doc.add_paragraph(f"Perda de objetos: {cog_perda_objetos}")
+            doc.add_paragraph(f"Repetição de perguntas/frases: {cog_repeticao}")
+            doc.add_paragraph(f"Dificuldade de foco em conversas: {cog_foco}")
+            doc.add_paragraph(f"Sensação de desorientação: {cog_desorientacao}")
+            doc.add_paragraph(f"Dificuldade para resolver problemas cotidianos: {cog_problemas}")
+            doc.add_paragraph(f"Necessidade de listas/lembretes: {cog_lembretes}")
+            doc.add_paragraph(f"Cansaço mental excessivo: {cog_cansaco}")
+            doc.add_paragraph(f"Troca/inversão de palavras: {cog_palavras}")
+            doc.add_paragraph(f"Dificuldade de encontrar palavras (anomia): {cog_anomia}")
+
+            # == Seção 4: Histórico Médico ==
+            doc.add_page_break()
+            doc.add_heading("4. Histórico Médico: Situação Atual e Passada", level=2)
+            doc.add_paragraph(f"Condições Médicas selecionadas: {', '.join(condicoes_medicas) if condicoes_medicas else 'Nenhuma'}")
             if "Câncer" in condicoes_medicas:
-                doc.add_paragraph(f"   Tipo de câncer e data do diagnóstico: {cancer_info}")
+                doc.add_paragraph(f"   • Tipo de câncer e data do diagnóstico: {cancer_info if cancer_info else 'Não informado'}")
             if "Doenças psiquiátricas" in condicoes_medicas:
-                doc.add_paragraph(f"   Diagnóstico psiquiátrico: {psiquiatria_info}")
+                doc.add_paragraph(f"   • Diagnóstico psiquiátrico: {psiquiatria_info if psiquiatria_info else 'Não informado'}")
             if "Outra(s) condição(ões) relevante(s)" in condicoes_medicas:
-                doc.add_paragraph(f"   Outras condições: {outras_condicoes}")
+                doc.add_paragraph(f"   • Outras condições médicas: {outras_condicoes if outras_condicoes else 'Não informado'}")
+
             doc.add_heading("Uso de Medicações", level=3)
             doc.add_paragraph(f"Faz uso contínuo ou recente de medicações: {usa_medicacao}")
-            doc.add_paragraph(f"   Medicamentos: {medicacoes if medicacoes else 'Nenhum'}")
-            doc.add_paragraph(f"Histórico Médico: {historico_medico if historico_medico else 'Não descrito'}")
+            doc.add_paragraph(f"   Medicamentos informados: {medicacoes if medicacoes else 'Nenhum'}")
+            doc.add_paragraph(f"Histórico Médico Pessoal: {historico_medico if historico_medico else 'Não descrito'}")
             doc.add_paragraph(f"Histórico Médico Familiar: {historico_familiar if historico_familiar else 'Não descrito'}")
 
-            # Desenvolvimento Infantil e Escolarização
+            # == Seção 5: Aspectos do Desenvolvimento Infantil ==
             doc.add_page_break()
-            doc.add_heading("Aspectos do Desenvolvimento Infantil", level=2)
+            doc.add_heading("5. Aspectos do Desenvolvimento Infantil", level=2)
             doc.add_paragraph(desenvolvimento_infantil if desenvolvimento_infantil else "Não descrito")
+
+            # == Seção 6: Aspectos do Desenvolvimento Escolar ==
             doc.add_page_break()
-            doc.add_heading("Aspectos do Desenvolvimento Escolar", level=2)
+            doc.add_heading("6. Aspectos do Desenvolvimento Escolar", level=2)
             doc.add_paragraph(historico_escolar if historico_escolar else "Não descrito")
 
-            # Aspectos Emocionais
+            # == Seção 7: Aspectos Emocionais ==
             doc.add_page_break()
-            doc.add_heading("Aspectos Emocionais", level=2)
-            doc.add_paragraph(f"Sono: {emocional_sono}, Apetite: {emocional_apetite}, Humor: {emocional_humor}, Estresse: {emocional_estresse}")
+            doc.add_heading("7. Aspectos Emocionais", level=2)
+            doc.add_paragraph(f"Alterações de sono: {emocional_sono}")
+            doc.add_paragraph(f"Alterações de apetite: {emocional_apetite}")
+            doc.add_paragraph(f"Oscilações de humor/tristeza: {emocional_humor}")
+            doc.add_paragraph(f"Nível de estresse percebido: {emocional_estresse}")
 
-            # Uso de Neurotecnologias
+            # == Seção 8: Uso de Neurotecnologias ==
             doc.add_page_break()
-            doc.add_heading("Uso de Neurotecnologias", level=2)
+            doc.add_heading("8. Uso de Neurotecnologias", level=2)
             doc.add_paragraph(uso_neuro if uso_neuro else "Nenhum uso informado")
 
-            # Observações Finais
+            # == Seção 9: Observações Finais ==
             doc.add_page_break()
-            doc.add_heading("Observações Finais", level=2)
+            doc.add_heading("9. Observações Finais", level=2)
             doc.add_paragraph(observacoes if observacoes else "Nenhuma observação adicional")
 
             # Salva o arquivo
@@ -253,9 +275,9 @@ if consentimento:
                     msg.attach(part)
 
                 server = smtplib.SMTP(EMAIL_SMTP, EMAIL_PORT)
-                server.ehlo()                      # Garante handshake antes do starttls 
+                server.ehlo()            # Handshake inicial antes do STARTTLS
                 server.starttls()
-                server.ehlo()                      # Re-negocia após TLS
+                server.ehlo()            # Handshake após TLS
                 server.login(EMAIL_USER, EMAIL_PASS)
                 server.sendmail(EMAIL_USER, [email or EMAIL_USER], msg.as_string())
                 server.quit()
